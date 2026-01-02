@@ -2,7 +2,8 @@
 
 1. Simulate the following CPU scheduling algorithms 
    - a. FCFS 
-   - b. SJF 
+   - b. SJF Preemptive
+   - c. SJF Non Preemptive
 2. Simulate the following CPU scheduling algorithms 
    - a. Priority 
    - b. Round robin 
