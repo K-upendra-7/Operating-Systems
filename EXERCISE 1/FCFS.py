@@ -3,9 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # Input
-print("FCFS Scheduler")
 num_processes = int(input("Enter number of processes: "))
-
 processes = []
 
 for i in range(num_processes):
@@ -28,26 +26,23 @@ for p in processes:
         timeline.append(('Idle', current_time, p['AT']))
         current_time = p['AT']
     
-    start_time = current_time
-    completion_time = current_time + p['BT']
-    
-    p['Start'] = start_time
-    p['CT'] = completion_time
-    p['TAT'] = completion_time - p['AT']
+    p['Start'] = current_time
+    p['CT'] = current_time + p['BT']
+    p['TAT'] = p['CT'] - p['AT']
     p['WT'] = p['TAT'] - p['BT']
     
     total_tat += p['TAT']
     total_wt += p['WT']
-    timeline.append((p['PID'], start_time, completion_time))
+    timeline.append((p['PID'], p['Start'], p['CT']))
     
-    current_time = completion_time
+    current_time = p['CT']
 
 avg_tat = total_tat / len(processes)
 avg_wt = total_wt / len(processes)
 
 # Output 
 df = pd.DataFrame(processes).sort_values(by='PID')
-print("FCFS Scheduler Results")
+print("FCFS Scheduler")
 print(df.to_string(index=False))
 print(f"Average Turnaround Time: {avg_tat:.2f}")
 print(f"Average Waiting Time:    {avg_wt:.2f}")

@@ -5,7 +5,7 @@ import pandas as pd
 # Input
 processes = []
 
-n = int(input("Enter number of processes to generate: "))
+n = int(input("Enter number of processes: "))
 for i in range(n):
     processes.append({
         'PID': f'P{i+1}',

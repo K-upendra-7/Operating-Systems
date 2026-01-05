@@ -5,7 +5,7 @@ import pandas as pd
 # Input
 processes = []
 
-n = int(input("Enter number of processes to generate: "))
+n = int(input("Enter number of processes: "))
 for i in range(n):
     bt = random.randint(1, 10)
     processes.append({
