@@ -31,7 +31,6 @@ while completed_count < n:
             if not p['Completed']:
                 available.append(p)
 
-
     if not available:
         remaining = []
 
