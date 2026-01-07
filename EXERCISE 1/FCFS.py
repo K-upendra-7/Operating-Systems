@@ -63,13 +63,11 @@ for label, start, end in timeline:
         
     if label == 'Idle':
         ax.broken_barh([(start, duration)], (-0.5, len(unique_pids)), facecolors='tab:red', alpha=0.5)
-
         ax.text(start + duration/2, mid_y, "Idle", ha='center', va='center', color='white', fontweight='bold', rotation=90)
     else:
         y = y_positions[label]
         ax.broken_barh([(start, duration)], (y - 0.4, 0.8), facecolors='tab:blue', edgecolor='black')
         ax.text(start + duration/2, y, label, ha='center', va='center', color='white', fontweight='bold')
-
 
 ax.set_yticks(range(len(unique_pids)))
 ax.set_yticklabels(unique_pids)

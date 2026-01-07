@@ -2,7 +2,7 @@ import random
 import matplotlib.pyplot as plt
 import pandas as pd
 
-# Input
+# Input 
 processes = []
 
 n = int(input("Enter number of processes: "))
@@ -43,32 +43,26 @@ while completed_count < n:
         timeline.append(('Idle', current_time, next_arrival))
         current_time = next_arrival
     else:
-        shortest_job = min(available, key=lambda x: x['BT'])
-        
-        start_time = current_time
-        completion_time = current_time + shortest_job['BT']
-        
-        shortest_job['Start'] = start_time
-        shortest_job['CT'] = completion_time
-        shortest_job['TAT'] = completion_time - shortest_job['AT']
+        shortest_job = min(available, key=lambda x: x['BT']) 
+        shortest_job['Start'] = current_time
+        shortest_job['CT'] = current_time + shortest_job['BT']
+        shortest_job['TAT'] = shortest_job['CT'] - shortest_job['AT']
         shortest_job['WT'] = shortest_job['TAT'] - shortest_job['BT']
         shortest_job['Completed'] = True
         
-        timeline.append((shortest_job['PID'], start_time, completion_time))
+        timeline.append((shortest_job['PID'], shortest_job['Start'], shortest_job['CT']))
         total_tat += shortest_job['TAT']
         total_wt += shortest_job['WT']
-        current_time = completion_time
+        current_time = shortest_job['CT']
         completed_count += 1
 
 avg_tat = total_tat / n
 avg_wt = total_wt / n
 
-# Output
-df = pd.DataFrame(processes)
-df = df[['PID', 'AT', 'BT', 'CT','WT','TAT']].sort_values(by='PID')
-
-print("Non Preemptive SJF Results")
-print(df.to_string(index=False))
+# Output 
+df = pd.DataFrame(processes).sort_values(by='PID')
+print("Non Preemptive SJF")
+print(df[['PID', 'AT', 'BT','Start','CT','WT','TAT']].to_string(index=False))
 print(f"Average Waiting Time:    {avg_wt: .2f}")
 print(f"Average Turnaround Time: {avg_tat: .2f}")
 
@@ -83,23 +77,17 @@ for label, start, end in timeline:
     
     if label == 'Idle':
         ax.broken_barh([(start, duration)], (-0.5, len(unique_pids)), facecolors='tab:red', alpha=0.5)
-        ax.text(start + duration/2, len(unique_pids)/2 - 0.5, "Idle", ha='center', va='center', rotation=90, color='white', fontweight='bold')
+        ax.text(start + duration/2, len(unique_pids)/2 - 0.5, "Idle", ha='center', va='center', color='white', fontweight='bold')
     else:
         y = y_pos[label]
         ax.broken_barh([(start, duration)], (y - 0.4, 0.8), facecolors='tab:blue', edgecolor='black')
         ax.text(start + duration/2, y, label, ha='center', va='center', color='white', fontweight='bold')
     
-    ax.text(start, -0.6, str(start), ha='center', va='top', fontsize=8)
-    ax.text(end, -0.6, str(end), ha='center', va='top', fontsize=8)
-
 ax.set_yticks(range(len(unique_pids)))
 ax.set_yticklabels(unique_pids)
 ax.set_xlabel('Time')
-ax.set_ylabel('Processes')
+ax.set_ylabel('Process ID')
 ax.set_title('Non Preemptive SJF Gantt Chart')
 ax.grid(True, axis='x', linestyle='--', alpha=0.6)
 plt.tight_layout()
 plt.show()
-
-
-
