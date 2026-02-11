@@ -4,3 +4,5 @@
    - a. minimum number of frames 
    - b. equal allocation 
    - c. proportional allocation 
+   
+1389A - L
