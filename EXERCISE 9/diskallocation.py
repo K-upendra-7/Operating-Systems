@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 
 # -------- GRAPH FUNCTION --------
 def plot_graph(order, title):
-    plt.figure(figsize=(12,6))   # 2:1 ratio
+    plt.figure(figsize=(12, 6))   # 2:1 ratio
 
-    plt.plot(order, range(len(order)), marker='o')
+    y = [i/2 for i in range(len(order))]   # scaled Y-axis
+    plt.plot(order, y, marker='o')
     plt.gca().invert_yaxis()
 
     plt.xlabel("Cylinder Number")
@@ -17,14 +18,11 @@ def plot_graph(order, title):
     plt.show()
 
 
-# -------- C-SCAN --------
+# -------- C-SCAN (Jump INCLUDED) --------
 def cscan(queue, head, start, end, direction):
 
-    left = [x for x in queue if x < head]
-    right = [x for x in queue if x >= head]
-
-    left.sort()
-    right.sort()
+    left = sorted([x for x in queue if x < head])
+    right = sorted([x for x in queue if x >= head])
 
     order = [head]
 
@@ -35,22 +33,17 @@ def cscan(queue, head, start, end, direction):
         order += left
 
     else:  # left
-        left.reverse()
-        order += left
+        order += left[::-1]
         order.append(start)
         order.append(end)
-        right.reverse()
-        order += right
+        order += right[::-1]
 
-    # movement (ignore jump)
+    # INCLUDE jump → no skipping
     total = 0
     for i in range(len(order)-1):
-        if (order[i] == end and order[i+1] == start) or \
-           (order[i] == start and order[i+1] == end):
-            continue
         total += abs(order[i+1] - order[i])
 
-    print("\nC-SCAN")
+    print("\nC-SCAN (Jump Included)")
     print("Service Order:", order)
     print("Total Head Movement:", total)
 
@@ -60,22 +53,17 @@ def cscan(queue, head, start, end, direction):
 # -------- LOOK --------
 def look(queue, head, direction):
 
-    left = [x for x in queue if x < head]
-    right = [x for x in queue if x >= head]
-
-    left.sort()
-    right.sort()
+    left = sorted([x for x in queue if x < head])
+    right = sorted([x for x in queue if x >= head])
 
     order = [head]
 
     if direction == "right":
         order += right
-        left.reverse()
-        order += left
+        order += left[::-1]
 
     else:
-        left.reverse()
-        order += left
+        order += left[::-1]
         order += right
 
     total = 0
@@ -89,36 +77,28 @@ def look(queue, head, direction):
     plot_graph(order, "LOOK Disk Scheduling")
 
 
-# -------- C-LOOK --------
+# -------- C-LOOK (Jump INCLUDED) --------
 def clook(queue, head, direction):
 
-    left = [x for x in queue if x < head]
-    right = [x for x in queue if x >= head]
-
-    left.sort()
-    right.sort()
+    left = sorted([x for x in queue if x < head])
+    right = sorted([x for x in queue if x >= head])
 
     order = [head]
 
     if direction == "right":
         order += right
-        order += left
+        order += left   # circular jump happens here
 
     else:
-        left.reverse()
-        order += left
-        right.reverse()
-        order += right
+        order += left[::-1]
+        order += right[::-1]  # circular jump happens here
 
-    # ignore circular jump
+    # INCLUDE jump
     total = 0
     for i in range(len(order)-1):
-        if (order[i] > order[i+1] and direction == "right") or \
-           (order[i] < order[i+1] and direction == "left"):
-            continue
         total += abs(order[i+1] - order[i])
 
-    print("\nC-LOOK")
+    print("\nC-LOOK (Jump Included)")
     print("Service Order:", order)
     print("Total Head Movement:", total)
 
@@ -147,11 +127,11 @@ print("\nDirection:")
 print("1. Left")
 print("2. Right")
 
-d = input("Enter direction: ")
+d = int(input("Enter direction: "))
 
-if d == "1":
+if d == 1:
     direction = "left"
-elif d == "2":
+elif d == 2:
     direction = "right"
 else:
     print("Invalid direction")
