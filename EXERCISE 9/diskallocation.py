@@ -43,7 +43,7 @@ def cscan(queue, head, start, end, direction):
     for i in range(len(order)-1):
         total += abs(order[i+1] - order[i])
 
-    print("\nC-SCAN (Jump Included)")
+    print("\nC-SCAN ")
     print("Service Order:", order)
     print("Total Head Movement:", total)
 
@@ -98,7 +98,7 @@ def clook(queue, head, direction):
     for i in range(len(order)-1):
         total += abs(order[i+1] - order[i])
 
-    print("\nC-LOOK (Jump Included)")
+    print("\nC-LOOK")
     print("Service Order:", order)
     print("Total Head Movement:", total)
 
