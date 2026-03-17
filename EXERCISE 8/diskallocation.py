@@ -12,8 +12,7 @@ def plot_graph(order, title):
     plt.xlabel("Cylinder Number")
     plt.ylabel("Step Number")
     plt.title(title)
-
-    plt.grid(True)
+    
     plt.show()
 
 

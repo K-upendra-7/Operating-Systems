@@ -14,7 +14,6 @@ def plot_graph(order, title):
     plt.ylabel("Step Number")
     plt.title(title)
 
-    plt.grid(True)
     plt.show()
 
 
